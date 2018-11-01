@@ -182,7 +182,7 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     0x28, 0x0b, 0x0c, 0x0d, 0x29, 0x0e, 0x0f, 0x10, 0x00 
   };
 
-  if (!is_master) {
+  if (is_master) {
     // If you want to change the display of OLED, you need to change here
     matrix_write_ln(matrix, text);
     matrix_write_ln(matrix, read_layer_state());

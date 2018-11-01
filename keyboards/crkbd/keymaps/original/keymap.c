@@ -10,6 +10,7 @@
 #ifdef SSD1306OLED
   #include "ssd1306.h"
 #endif
+#include "../../lib/game/mini_game.h"
 
 extern keymap_config_t keymap_config;
 
@@ -35,7 +36,9 @@ enum custom_keycodes {
   RAISE,
   ADJUST,
   BACKLIT,
-  RGBRST
+  RGBRST,
+  KC_GAME1,
+  KC_GAME2,
 };
 
 enum macro_keycodes {
@@ -43,7 +46,7 @@ enum macro_keycodes {
 };
 
 #define _____ KC_TRNS
-// #define KC______ KC_TRNS
+#define KC______ KC_TRNS
 #define KC_XXXXX KC_NO
 #define KC_LOWER LOWER
 #define KC_RAISE RAISE
@@ -61,7 +64,8 @@ enum macro_keycodes {
 #define KC_GUIEI GUI_T(KC_LANG2)
 #define KC_ALTKN ALT_T(KC_LANG1)
 
-#define KC_SPSFT    SFT_T(KC_SPC)
+#define KC_RASPC    LT(_RAISE,KC_SPC)
+#define KC_SFENT    SFT_T(KC_ENT)
 #define KC_COPY     LGUI(KC_C)
 #define KC_PASTE    LGUI(KC_V)
 
@@ -79,19 +83,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
        LSFT,     Z,     X,     C,     V,     B,                      N,     M,  COMM,   DOT,  SLSH,    RO,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                  GUIEI, LOWER, SPSFT,      ENT, RAISE, ALTKN \
+                                  GUIEI,  BSPC, RASPC,    LOWER, SFENT, ALTKN \
                               //`--------------------'  `--------------------'
   ),
 
   [_LOWER] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        ESC,     1,     2,     3,     4,     5,                      6,     7,     8,     9,     0, XXXXX,\
+        ESC,     1,     2,     3,     4,     5,                      6,     7,     8,     9,     0, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,                   MINS,   EQL, XXXXX, XXXXX, XXXXX, XXXXX,\
+      _____, _____, _____, _____, _____, _____,                   LEFT,  DOWN,    UP, RIGHT, _____, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      XXXXX, XXXXX, XXXXX, COPY,  PASTE, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      _____, _____, _____, _____, _____, _____,                   MINS,   EQL, _____, _____, _____, _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                  XXXXX, XXXXX, XXXXX,    XXXXX, XXXXX, XXXXX \
+                                  _____, _____, _____,    _____, _____, _____ \
                               //`--------------------'  `--------------------'
   ),
 
@@ -109,13 +113,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT_kc( \
   //,-----------------------------------------.                ,-----------------------------------------.
-        RST,  LRST, XXXXX, XXXXX, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+     _____,  GAME1, GAME2, _____, _____, _____,                  _____, _____, _____, _____, _____, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-       LTOG,  LHUI,  LSAI,  LVAI, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      _____, _____, _____, _____, _____, _____,                  _____, _____, _____, _____, _____, _____,\
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
-      LSMOD,  LHUD,  LSAD,  LVAD, XXXXX, XXXXX,                  XXXXX, XXXXX, XXXXX, XXXXX, XXXXX, XXXXX,\
+      _____, _____, _____,  COPY, PASTE, _____,                  _____, _____, _____, _____, _____, _____,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                  XXXXX, XXXXX, XXXXX,    XXXXX, XXXXX, XXXXX \
+                                  _____, _____, _____,    _____, _____, _____ \
                               //`--------------------'  `--------------------'
   )
 };
@@ -136,6 +140,11 @@ void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
   }
 }
 
+void minigame_change(GameType type);
+void minigame_initialize(void);
+void minigame_update(uint16_t keycode, keyrecord_t *record);
+const char *minigame_view(void);
+
 void matrix_init_user(void) {
     #ifdef RGBLIGHT_ENABLE
       RGB_current_mode = rgblight_config.mode;
@@ -144,6 +153,7 @@ void matrix_init_user(void) {
     #ifdef SSD1306OLED
         iota_gfx_init(!has_usb());   // turns on the display
     #endif
+    minigame_initialize();
 }
 
 //SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
@@ -156,7 +166,8 @@ void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
 
-// const char *read_mode_icon(bool swap);
+
+const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
 // void set_timelog(void);
 // const char *read_timelog(void);
@@ -166,21 +177,24 @@ void matrix_scan_user(void) {
 }
 
 void matrix_render_user(struct CharacterMatrix *matrix) {
-	// (◞‸◟)ﾃﾞｭﾝ
-	const char text[] = {
-		0x28, 0x0b, 0x0c, 0x0d, 0x29, 0x0e, 0x0f, 0x10, 0x00 
-	};
-  if (is_master) {
+  // (◞‸◟)ﾃﾞｭﾝ
+  const char text[] = {
+    0x28, 0x0b, 0x0c, 0x0d, 0x29, 0x0e, 0x0f, 0x10, 0x00 
+  };
+
+  if (!is_master) {
     // If you want to change the display of OLED, you need to change here
     matrix_write_ln(matrix, text);
     matrix_write_ln(matrix, read_layer_state());
     // matrix_write_ln(matrix, read_keylog());
-    matrix_write_ln(matrix, read_keylogs());
+    // matrix_write_ln(matrix, read_keylogs());
     //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
     //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_timelog());
   } else {
-    matrix_write(matrix, read_logo());
+    matrix_write(matrix, minigame_view());
+    //matrix_write(matrix, read_logo());
+
   }
 }
 
@@ -201,6 +215,7 @@ void iota_gfx_task_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     set_keylog(keycode, record);
+    minigame_update(keycode, record);
     // set_timelog();
   }
 
@@ -257,6 +272,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
+      break;
+    case KC_GAME1:
+      minigame_change(COLLECT);
+      break;
+    case KC_GAME2:
+      minigame_change(TYPING);
       break;
   }
   return true;

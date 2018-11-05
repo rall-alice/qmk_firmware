@@ -4,4 +4,4 @@
 #include <stdio.h>
 #include <string.h>
 
-extern GameInterFace game_typing;
+extern GameInterface game_typing;

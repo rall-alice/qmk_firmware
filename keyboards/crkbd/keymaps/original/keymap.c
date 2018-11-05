@@ -143,7 +143,7 @@ void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
 void minigame_change(GameType type);
 void minigame_initialize(void);
 void minigame_update(uint16_t keycode, keyrecord_t *record);
-const char *minigame_view(void);
+const char *minigame_render(void);
 
 void matrix_init_user(void) {
     #ifdef RGBLIGHT_ENABLE
@@ -192,7 +192,7 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_timelog());
   } else {
-    matrix_write(matrix, minigame_view());
+    matrix_write(matrix, minigame_render());
     //matrix_write(matrix, read_logo());
 
   }

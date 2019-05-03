@@ -1,7 +1,8 @@
 #pragma once
 
 typedef enum _game_type{
-  COLLECT = 0,
+  LOGO = 0,
+  COLLECT,
   TYPING,
   GAME_MAX
 } GameType;

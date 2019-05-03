@@ -28,8 +28,9 @@ SRC +=  ./lib/glcdfont.c \
         ./lib/keylogger.c \
         ./lib/mode_icon_reader.c \
         ./lib/game/mini_game_util.c \
+        ./lib/game/game_logo.c \
         ./lib/game/game_collect.c \
-        ./lib/game/game_typing.c \
+        ./lib/game/game_typing2.c \
         ./lib/game/mini_game.c \
         # ./lib/host_led_state_reader.c \
         # ./lib/timelogger.c \

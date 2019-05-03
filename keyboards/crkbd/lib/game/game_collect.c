@@ -82,7 +82,7 @@ const char *collect_render(void) {
 
   char score_buff[MatrixCols];
   sprintf(score_buff, "score %d", gs.score);
-  game_render_row(0, render_buff, score_buff);
+  matrix_row_copy(0, render_buff, score_buff);
 
   int enemy_pos = enemy.y * MatrixCols + enemy.x;
   int pos = gs.y * MatrixCols + gs.x;

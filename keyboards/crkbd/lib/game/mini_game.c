@@ -1,7 +1,7 @@
 #include QMK_KEYBOARD_H
-#include "crkbd.h"
 #include "mini_game.h"
 #include "game_interface.h"
+#include "game_logo.h"
 #include "game_collect.h"
 #include "game_typing.h"
 #include <time.h>
@@ -10,7 +10,7 @@
 GameInterface game_collect;
 GameInterface game_typing;
 
-GameType game_type = COLLECT;
+GameType game_type = LOGO;
 GameInterface game_list[GAME_MAX] = {};
 
 void minigame_change(GameType type) {
@@ -19,6 +19,7 @@ void minigame_change(GameType type) {
 
 void minigame_initialize(void) {
   srand(time(NULL));
+  game_list[LOGO] = game_logo;
   game_list[COLLECT] = game_collect;
   game_list[TYPING] = game_typing;
   for (int i=0; i<GAME_MAX; i++) {

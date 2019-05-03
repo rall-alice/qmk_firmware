@@ -5,7 +5,7 @@ uint8_t random_num(uint8_t min, uint8_t max) {
   return rand()%(max+1-min) + min;
 }
 
-void game_render_row(uint8_t row, char* buff, const char* str) {
+void matrix_row_copy(uint8_t row, char* buff, const char* str) {
   if (MatrixRows <= row) { return; }
   uint8_t copy_size = (strlen(str) > MatrixCols) ? MatrixCols: strlen(str);
   memcpy(&buff[row*MatrixCols], str, copy_size);

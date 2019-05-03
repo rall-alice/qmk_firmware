@@ -6,30 +6,63 @@
 // extern
 const char code_to_name[60];
 
-const char* use_char_list = "ABCDEFGHIJKLMNOPQESTUVWXYZ";
+const char* question_list[] = {
+  "APPLE",
+  "BREAD",
+  "CANDY",
+  "DONUT",
+  "EGG",
+  "FIG",
+  "GRAPE",
+  "HONEY",
+  "ICE",
+  "JELLY",
+  "KIWI",
+  "LEMON",
+  "MARSHMALLOW",
+  "NOODLE",
+  "ORANGE",
+  "PIZZA",
+  "QUIZ",
+  "RAMEN",
+  "SUSHI",
+  "TOAST",
+  "UDON",
+  "VIM",
+  "WAFFLE",
+  "XYLOCARP",
+  "YAMS",
+  "ZUCCHINI",
+};
+
+const char* use_char_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 uint16_t score = 0;
 uint16_t miss = 0;
 char render_buff[MaxDisplayChar];
 char question_buff[MatrixCols + 2] = "";
 
-char get_char(void) {
-  return use_char_list[random_num(0, strlen(use_char_list)-1)];
+const char* get_next(void) {
+  return question_list[random_num(0, strlen(use_char_list)-1)];
 }
 
 void typing_initialize(void){
-  for (int i = 0; i < MaxQuestionSize; i++) {
-    question_buff[i] = get_char();
-  }
+  const char* next = get_next();
+  memcpy(question_buff, next, strlen(next)*sizeof(char));
 }
 
 void typing_update(uint16_t keycode, keyrecord_t *record) {
   if (keycode >= 60) { return; }
 
   if (code_to_name[keycode] == (question_buff[0] + 0x20)) { // Upper to Lower
-    question_buff[MaxQuestionSize - 1] = get_char();
-    memcpy(question_buff, &question_buff[1], (MaxQuestionSize-1)*sizeof(char));
     score++;
+    memcpy(question_buff, &question_buff[1], (MaxQuestionSize-1)*sizeof(char));
+
+    if (strlen(question_buff) <= 0) {
+      const char* next = get_next();
+      memcpy(question_buff, next, strlen(next)*sizeof(char));
+    }
+    
   } else {
     miss++;
   }

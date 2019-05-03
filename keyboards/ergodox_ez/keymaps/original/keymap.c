@@ -11,6 +11,7 @@
 #define NUM   2 // number keys
 #define MDIA  3 // media keys
 #define DEVEL 4 // programing keys
+#define CLICK 5 // click keys
 
 #define JP_HAT  JP_CIRC  // ^
 #define JP_RO   KC_RO    // \, _ 
@@ -71,23 +72,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = LAYOUT_ergodox(  // layer 0 : default
         // left hand
-        KC_ESC,         KC_1,         KC_2,         KC_3,        KC_4,       KC_5,     JP_LBRC,
-        KC_TAB,         KC_Q,         KC_W,         KC_E,        KC_R,       KC_T,     JP_HAT,
-        KC_LCTRL,       KC_A,         KC_S,         KC_D,        KC_F,       KC_G,
-        MO(SYMB),      KC_Z,         KC_X,         KC_C,        KC_V,       KC_B,     KC_ESC,
-        MO(MDIA),       KC_LALT,      KC_LGUI,      RGUI(KC_C),  RGUI(KC_V),
-                                                        KC_LALT,        MO(MDIA),
-                                                                        KC_LGUI,
-                                            KC_BSPC,    GUI_T(KC_SPC),  MO(MDIA),
+        KC_ESC,         KC_1,       KC_2,       KC_3,        KC_4,       KC_5,        KC_NO,
+        KC_TAB,         KC_Q,       KC_W,       KC_E,        KC_R,       KC_T,        JP_HAT,
+        KC_LCTRL,       KC_A,       KC_S,       KC_D,        KC_F,       KC_G,
+        MO(MDIA),       KC_Z,       KC_X,       KC_C,        KC_V,       KC_B,        KC_ESC,
+        MO(NUM),       KC_LALT,    KC_LGUI,    RGUI(KC_C),  RGUI(KC_V),
+                                                        KC_LSFT,       KC_ESC,
+                                                                        MO(SYMB),
+                                            KC_BSPC,    GUI_T(KC_SPC),  LT(MDIA, KC_LANG2),
         // right hand
-        JP_RBRC,        KC_6,      KC_7,      KC_8,      KC_9,    KC_0,        JP_YEN,   
-        KC_MINS,        KC_Y,      KC_U,      KC_I,      KC_O,    KC_P,        JP_AT,
-                        KC_H,      KC_J,      KC_K,      KC_L,    JP_COLN,     KC_SCLN,
-        TD(TD_COMM_DOT)/*M(M_C_D)*/,       KC_N,      KC_M,      KC_COMM,   KC_DOT,  KC_SLSH,     JP_RO,
-                        MO(DEVEL),   KC_LEFT,   KC_DOWN,   KC_UP  , KC_RIGHT,
-        KC_RGUI,        MO(MDIA),
+        KC_NO  ,         KC_6,      KC_7,       KC_8,        KC_9,       KC_0,        JP_YEN,   
+        KC_MINS,         KC_Y,      KC_U,       KC_I,        KC_O,       KC_P,        JP_AT,
+                         KC_H,      KC_J,       KC_K,        KC_L,       JP_COLN,     KC_SCLN,
+        TD(TD_COMM_DOT), KC_N,      KC_M,       KC_COMM,     KC_DOT,     KC_SLSH,     JP_RO,
+                         KC_SLSH,   KC_LEFT,    KC_DOWN,     KC_UP  ,    KC_RIGHT,
+        KC_LANG1,        KC_RGUI,
         MO(NUM),
-        TD(TD_LANG), RSFT_T(KC_LANG1), LT(SYMB,KC_ENT)
+        KC_LANG1, KC_RSFT, LT(SYMB,KC_ENT)
     ),
 
 // Keymap 1: Symbol Layer
@@ -125,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS, KC_F6,   KC_F7,     KC_F8,      KC_F9,      KC_F10,  KC_F11,
        KC_TRNS, KC_TRNS, JP_LPRN,   JP_RPRN,    KC_TRNS,    JP_PERC, KC_F12,
                 JP_HASH, JP_LBRC,   JP_RBRC,    KC_TRNS,    KC_TRNS, KC_TRNS,
-       KC_TRNS, KC_TRNS, JP_LCBR,   JP_RCBR,    KC_TRNS,    KC_TRNS, KC_TRNS,
+       KC_TRNS, JP_AMPR, JP_LCBR,   JP_RCBR,    KC_TRNS,    KC_TRNS, KC_TRNS,
                          KC_TRNS,   KC_TRNS,    KC_TRNS,    KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS,
        KC_TRNS,
@@ -166,7 +167,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        // right hand
        KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS, KC_TRNS,   
        KC_TRNS, KC_6,    KC_7,      KC_8,      KC_9,       KC_0,    KC_TRNS,   
-                KC_TRNS, KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS, KC_TRNS,
+                KC_MINS, KC_COMM,   KC_DOT,    KC_SLSH,    JP_RO,   KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS, KC_TRNS,
                          KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS,
@@ -198,9 +199,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        // left hand
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,
-       KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,
+       KC_TRNS, KC_BTN1, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,
+       MO(CLICK),  KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,
                                            KC_TRNS, KC_TRNS,
                                                     KC_TRNS,
                                   KC_TRNS, KC_TRNS, KC_TRNS,
@@ -255,8 +256,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,
        KC_TRNS,   KC_TRNS,  KC_TRNS
 ),
+[CLICK] = LAYOUT_ergodox(
+
+       // left hand
+       KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,
+       KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,
+       KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,
+       KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,
+         KC_TRNS, KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,  
+                                       KC_TRNS,KC_TRNS,
+                                               KC_TRNS,
+                               KC_TRNS,KC_TRNS,KC_TRNS,
+       // right hand
+       KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,   
+       KC_TRNS,   KC_BTN1,  KC_BTN1,   KC_BTN1,   KC_BTN1,    KC_TRNS,  KC_TRNS,   
+                  KC_BTN1,  KC_BTN1,   KC_BTN1,   KC_BTN1,    KC_TRNS,  KC_TRNS,
+       KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,
+                            KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,
+       KC_TRNS,   KC_TRNS,
+       KC_TRNS,
+       KC_TRNS,   KC_TRNS,  KC_TRNS
+),
 /* template
-[] = LAYOUT_ergodox(
+[TEMPLATE] = LAYOUT_ergodox(
 
        // left hand
        KC_TRNS,   KC_TRNS,  KC_TRNS,   KC_TRNS,   KC_TRNS,    KC_TRNS,  KC_TRNS,
@@ -326,7 +348,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+
   }
+
   return true;
 }
 
